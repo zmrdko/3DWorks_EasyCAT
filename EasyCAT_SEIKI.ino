@@ -15,6 +15,9 @@
 // claim, damages or other liability, arising from, or in connection with this software.     *
 //                                                                                           *
 //******************************************************************************************** 
+// inputs and outputs handling by Alexander Richter
+// https://github.com/AlexmagToast/LinuxCNC_ArduinoConnector
+//******************************************************************************************** 
 
 
 
