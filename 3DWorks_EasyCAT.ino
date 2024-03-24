@@ -286,7 +286,9 @@ void Application() {
     #ifdef QUADENC
     readEncoders();                                    //read Encoders & send data
     #endif
+    #ifdef DEBUG
     printVars();
+    #endif
   }
 }
 
