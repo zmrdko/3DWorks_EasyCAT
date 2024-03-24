@@ -1,20 +1,19 @@
 
 Easy Configurator, configuration engine  V_3_3 
 
-log created on Wed Mar 20 19:30:36 2024
+log created on Thu Mar 21 21:33:43 2024
 
 Analyzing the project file
 
 Easy Configurator project 3DWorksEasyCAT.prj
 
 OUTPUTS_TAG
-Line 4 --- outputSet1              uint8_t
+Line 4 --- outputSet0              uint32_t
+Line 5 --- outputSet1              uint32_t
 INPUTS_TAG
-Line 6 --- inputSet1               uint8_t
-Line 7 --- inputSet2               uint8_t
-Line 8 --- inputSet3               uint8_t
-Line 9 --- inputSet4               uint8_t
-Line 10 --- mpgEncoder1             int32_t
+Line 7 --- mpg0                    int32_t
+Line 8 --- inputSet0               uint32_t
+Line 9 --- inputSet1               uint32_t
 INFO_TAG
 0x0000079A
 AB&amp;T
@@ -26,10 +25,10 @@ END_TAG
 
 The 3DWorksEasyCAT.prj configuration file is correct
 
-ByteNumOut 1
-ByteNumIn  8
-PdoNumOut  1
-PdoNumIn   5
+ByteNumOut 8
+ByteNumIn  12
+PdoNumOut  2
+PdoNumIn   3
 
 Creating the 3DWorksEasyCAT.xml file
 
@@ -47,9 +46,16 @@ Output entries
           <Entry>
             <Index>#x5</Index>
             <SubIndex>1</SubIndex>
-            <BitLen>8</BitLen>
+            <BitLen>32</BitLen>
+            <Name>outputSet0</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>32</BitLen>
             <Name>outputSet1</Name>
-            <DataType>USINT</DataType>
+            <DataType>UDINT</DataType>
           </Entry>
 
 Input entries
@@ -57,36 +63,22 @@ Input entries
             <Index>#x6</Index>
             <SubIndex>1</SubIndex>
             <BitLen>32</BitLen>
-            <Name>mpgEncoder1</Name>
+            <Name>mpg0</Name>
             <DataType>DINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>2</SubIndex>
-            <BitLen>8</BitLen>
-            <Name>inputSet2</Name>
-            <DataType>USINT</DataType>
+            <BitLen>32</BitLen>
+            <Name>inputSet0</Name>
+            <DataType>UDINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>3</SubIndex>
-            <BitLen>8</BitLen>
-            <Name>inputSet3</Name>
-            <DataType>USINT</DataType>
-          </Entry>
-          <Entry>
-            <Index>#x6</Index>
-            <SubIndex>4</SubIndex>
-            <BitLen>8</BitLen>
-            <Name>inputSet4</Name>
-            <DataType>USINT</DataType>
-          </Entry>
-          <Entry>
-            <Index>#x6</Index>
-            <SubIndex>5</SubIndex>
-            <BitLen>8</BitLen>
+            <BitLen>32</BitLen>
             <Name>inputSet1</Name>
-            <DataType>USINT</DataType>
+            <DataType>UDINT</DataType>
           </Entry>
 
 LAST_TAG
@@ -95,21 +87,20 @@ The 3DWorksEasyCAT.xml file has been created
 
 Creating the 3DWorksEasyCAT.h file
 
-#define CUST_BYTE_NUM_OUT	1
-#define CUST_BYTE_NUM_IN	8
-#define TOT_BYTE_NUM_ROUND_OUT	4
-#define TOT_BYTE_NUM_ROUND_IN	8
+#define CUST_BYTE_NUM_OUT	8
+#define CUST_BYTE_NUM_IN	12
+#define TOT_BYTE_NUM_ROUND_OUT	8
+#define TOT_BYTE_NUM_ROUND_IN	12
 
 
 Output entries
-		uint8_t     outputSet1;
+		uint32_t    outputSet0;
+		uint32_t    outputSet1;
 
 Input entries
-		int32_t     mpgEncoder1;
-		uint8_t     inputSet2;
-		uint8_t     inputSet3;
-		uint8_t     inputSet4;
-		uint8_t     inputSet1;
+		int32_t     mpg0;
+		uint32_t    inputSet0;
+		uint32_t    inputSet1;
 
 The 3DWorksEasyCAT.h file has been created
 

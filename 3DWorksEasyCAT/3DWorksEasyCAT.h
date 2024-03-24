@@ -10,10 +10,10 @@
 //-------------------------------------------------------------------//
 
 
-#define CUST_BYTE_NUM_OUT	1
-#define CUST_BYTE_NUM_IN	8
-#define TOT_BYTE_NUM_ROUND_OUT	4
-#define TOT_BYTE_NUM_ROUND_IN	8
+#define CUST_BYTE_NUM_OUT	8
+#define CUST_BYTE_NUM_IN	12
+#define TOT_BYTE_NUM_ROUND_OUT	8
+#define TOT_BYTE_NUM_ROUND_IN	12
 
 
 typedef union												//---- output buffer ----
@@ -21,7 +21,8 @@ typedef union												//---- output buffer ----
 	uint8_t  Byte [TOT_BYTE_NUM_ROUND_OUT];
 	struct
 	{
-		uint8_t     outputSet1;
+		uint32_t    outputSet0;
+		uint32_t    outputSet1;
 	}Cust;
 } PROCBUFFER_OUT;
 
@@ -31,11 +32,9 @@ typedef union												//---- input buffer ----
 	uint8_t  Byte [TOT_BYTE_NUM_ROUND_IN];
 	struct
 	{
-		int32_t     mpgEncoder1;
-		uint8_t     inputSet2;
-		uint8_t     inputSet3;
-		uint8_t     inputSet4;
-		uint8_t     inputSet1;
+		int32_t     mpg0;
+		uint32_t    inputSet0;
+		uint32_t    inputSet1;
 	}Cust;
 } PROCBUFFER_IN;
 

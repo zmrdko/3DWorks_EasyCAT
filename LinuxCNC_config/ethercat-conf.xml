@@ -1,0 +1,78 @@
+<masters>
+  <master idx="0" appTimePeriod="125000" refClockSyncCycles="-1">
+    <slave idx="1" type="generic" vid="0000079a" pid="00defede" configPdos="true" name="EasyCAT">
+      <syncManager idx="0" dir="out">
+        <pdo idx="1600">
+          <pdoEntry idx="5" subIdx="01" bitLen="8" halPin="outByte00" halType="u32"/>
+          <pdoEntry idx="5" subIdx="02" bitLen="8" halPin="outByte01" halType="u32"/>
+          <pdoEntry idx="5" subIdx="03" bitLen="8" halPin="outByte02" halType="u32"/>
+          <pdoEntry idx="5" subIdx="04" bitLen="8" halPin="outByte03" halType="u32"/>
+          <pdoEntry idx="5" subIdx="05" bitLen="8" halPin="outByte04" halType="u32"/>
+          <pdoEntry idx="5" subIdx="06" bitLen="8" halPin="outByte05" halType="u32"/>
+          <pdoEntry idx="5" subIdx="07" bitLen="8" halPin="outByte06" halType="u32"/>
+          <pdoEntry idx="5" subIdx="08" bitLen="8" halPin="outByte07" halType="u32"/>
+          <pdoEntry idx="5" subIdx="09" bitLen="8" halPin="outByte08" halType="u32"/>
+          <pdoEntry idx="5" subIdx="10" bitLen="8" halPin="outByte09" halType="u32"/>
+          <pdoEntry idx="5" subIdx="11" bitLen="8" halPin="outByte10" halType="u32"/>
+          <pdoEntry idx="5" subIdx="12" bitLen="8" halPin="outByte11" halType="u32"/>
+          <pdoEntry idx="5" subIdx="13" bitLen="8" halPin="outByte12" halType="u32"/>
+          <pdoEntry idx="5" subIdx="14" bitLen="8" halPin="outByte13" halType="u32"/>
+          <pdoEntry idx="5" subIdx="15" bitLen="8" halPin="outByte14" halType="u32"/>
+          <pdoEntry idx="5" subIdx="16" bitLen="8" halPin="outByte15" halType="u32"/>
+          <pdoEntry idx="5" subIdx="17" bitLen="8" halPin="outByte16" halType="u32"/>
+          <pdoEntry idx="5" subIdx="18" bitLen="8" halPin="outByte17" halType="u32"/>
+          <pdoEntry idx="5" subIdx="19" bitLen="8" halPin="outByte18" halType="u32"/>
+          <pdoEntry idx="5" subIdx="20" bitLen="8" halPin="outByte19" halType="u32"/>
+          <pdoEntry idx="5" subIdx="21" bitLen="8" halPin="outByte20" halType="u32"/>
+          <pdoEntry idx="5" subIdx="22" bitLen="8" halPin="outByte21" halType="u32"/>
+          <pdoEntry idx="5" subIdx="23" bitLen="8" halPin="outByte22" halType="u32"/>
+          <pdoEntry idx="5" subIdx="24" bitLen="8" halPin="outByte23" halType="u32"/>
+          <pdoEntry idx="5" subIdx="25" bitLen="8" halPin="outByte24" halType="u32"/>
+          <pdoEntry idx="5" subIdx="26" bitLen="8" halPin="outByte25" halType="u32"/>
+          <pdoEntry idx="5" subIdx="27" bitLen="8" halPin="outByte26" halType="u32"/>
+          <pdoEntry idx="5" subIdx="28" bitLen="8" halPin="outByte27" halType="u32"/>
+          <pdoEntry idx="5" subIdx="29" bitLen="8" halPin="outByte28" halType="u32"/>
+          <pdoEntry idx="5" subIdx="30" bitLen="8" halPin="outByte29" halType="u32"/>
+          <pdoEntry idx="5" subIdx="31" bitLen="8" halPin="outByte30" halType="u32"/>
+          <pdoEntry idx="5" subIdx="32" bitLen="8" halPin="outByte31" halType="u32"/>
+        </pdo>
+      </syncManager>
+      <syncManager idx="1" dir="in">
+        <pdo idx="1a00">
+          <pdoEntry idx="6" subIdx="01" bitLen="8" halPin="inByte00" halType="u32"/>
+          <pdoEntry idx="6" subIdx="02" bitLen="8" halPin="inByte01" halType="u32"/>
+          <pdoEntry idx="6" subIdx="03" bitLen="8" halPin="inByte02" halType="u32"/>
+          <pdoEntry idx="6" subIdx="04" bitLen="8" halPin="inByte03" halType="u32"/>
+          <pdoEntry idx="6" subIdx="05" bitLen="8" halPin="inByte04" halType="u32"/>
+          <pdoEntry idx="6" subIdx="06" bitLen="8" halPin="inByte05" halType="u32"/>
+          <pdoEntry idx="6" subIdx="07" bitLen="8" halPin="inByte06" halType="u32"/>
+          <pdoEntry idx="6" subIdx="08" bitLen="8" halPin="inByte07" halType="u32"/>
+          <pdoEntry idx="6" subIdx="09" bitLen="8" halPin="inByte08" halType="u32"/>
+          <pdoEntry idx="6" subIdx="10" bitLen="8" halPin="inByte09" halType="u32"/>
+          <pdoEntry idx="6" subIdx="11" bitLen="8" halPin="inByte10" halType="u32"/>
+          <pdoEntry idx="6" subIdx="12" bitLen="8" halPin="inByte11" halType="u32"/>
+          <pdoEntry idx="6" subIdx="13" bitLen="8" halPin="inByte12" halType="u32"/>
+          <pdoEntry idx="6" subIdx="14" bitLen="8" halPin="inByte13" halType="u32"/>
+          <pdoEntry idx="6" subIdx="15" bitLen="8" halPin="inByte14" halType="u32"/>
+          <pdoEntry idx="6" subIdx="16" bitLen="8" halPin="inByte15" halType="u32"/>
+          <pdoEntry idx="6" subIdx="17" bitLen="8" halPin="inByte16" halType="u32"/>
+          <pdoEntry idx="6" subIdx="18" bitLen="8" halPin="inByte17" halType="u32"/>
+          <pdoEntry idx="6" subIdx="19" bitLen="8" halPin="inByte18" halType="u32"/>
+          <pdoEntry idx="6" subIdx="20" bitLen="8" halPin="inByte19" halType="u32"/>
+          <pdoEntry idx="6" subIdx="21" bitLen="8" halPin="inByte20" halType="u32"/>
+          <pdoEntry idx="6" subIdx="22" bitLen="8" halPin="inByte21" halType="u32"/>
+          <pdoEntry idx="6" subIdx="23" bitLen="8" halPin="inByte22" halType="u32"/>
+          <pdoEntry idx="6" subIdx="24" bitLen="8" halPin="inByte23" halType="u32"/>
+          <pdoEntry idx="6" subIdx="25" bitLen="8" halPin="inByte24" halType="u32"/>
+          <pdoEntry idx="6" subIdx="26" bitLen="8" halPin="inByte25" halType="u32"/>
+          <pdoEntry idx="6" subIdx="27" bitLen="8" halPin="inByte26" halType="u32"/>
+          <pdoEntry idx="6" subIdx="28" bitLen="8" halPin="inByte27" halType="u32"/>
+          <pdoEntry idx="6" subIdx="29" bitLen="8" halPin="inByte28" halType="u32"/>
+          <pdoEntry idx="6" subIdx="30" bitLen="8" halPin="inByte29" halType="u32"/>
+          <pdoEntry idx="6" subIdx="31" bitLen="8" halPin="inByte30" halType="u32"/>
+          <pdoEntry idx="6" subIdx="32" bitLen="8" halPin="inByte31" halType="u32"/>
+        </pdo>
+      </syncManager>
+    </slave>
+  </master>
+</masters>
