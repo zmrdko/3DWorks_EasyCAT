@@ -138,14 +138,6 @@ const int BitOut2 = A4;  // digital output bit 2
 const int BitOut3 = A5;  // digital output bit 3
 
 const int BitIn[] = {0,1,2,3,4,5,6,7};
-const int BitIn00 = 0;  // digital input  bit 0
-const int BitIn01 = 1;  // digital input  bit 1
-//const int BitIn02 = 2;              // digital input  bit 2
-//const int BitIn03 = 3;              // digital input  bit 3
-const int BitIn04 = 4;  // digital input  bit 0
-const int BitIn05 = 5;  // digital input  bit 1
-const int BitIn06 = 6;  // digital input  bit 2
-const int BitIn07 = 7;  // digital input  bit 3
 
 #ifdef QUADENC
 const int QuadEncs = QUADENCS;
@@ -197,17 +189,9 @@ void setup() {
   pinMode(BitOut3, OUTPUT);  //
 
   for (int i = 0; i < 8; i++) {
-    pinMode(BitIn[i], INPUT_PULLUP);
+    pinMode(BitIn[i], INPUT_PULLUP); // digital input pins setting
   }
 
-  pinMode(BitIn00, INPUT_PULLUP);  // digital input pins setting
-  pinMode(BitIn01, INPUT_PULLUP);  //
-                                   //  pinMode(BitIn02, INPUT_PULLUP);                                 //
-                                   //  pinMode(BitIn03, INPUT_PULLUP);                                 //
-  pinMode(BitIn04, INPUT_PULLUP);  //
-  pinMode(BitIn05, INPUT_PULLUP);  //
-  pinMode(BitIn06, INPUT_PULLUP);  //
-  pinMode(BitIn07, INPUT_PULLUP);  //
                                    //---- initialize the EasyCAT board -----
 
   if (EASYCAT.Init() == true) {         // initialization
