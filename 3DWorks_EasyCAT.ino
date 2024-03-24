@@ -68,6 +68,19 @@ const int Inputs = 1;  //number of inputs using internal Pullup resistor. (short
 int InPinmap[] = { 53 };
 #endif
 
+//Use Arduino IO's as Toggle Inputs, which means Inputs (Buttons for example) keep HIGH State after Release and Send LOW only after beeing Pressed again.
+#define SINPUTS  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
+#ifdef SINPUTS
+const int sInputs = 1;  //number of inputs using internal Pullup resistor. (short to ground to trigger)
+int sInPinmap[] = { 40 };
+#endif
+
+#define OUTPUTS  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
+#ifdef OUTPUTS
+const int Outputs = 1;  //number of outputs
+int OutPinmap[] = { 38 };
+#endif
+
 #define QUADENC
 //Support for Quadrature Encoders. Define Pins for A and B Signals for your encoders. Visit https://www.pjrc.com/teensy/td_libs_Encoder.html for further explanation.
 // Download Zip from here: https://github.com/PaulStoffregen/Encoder and import as Library to your Arduino IDE.
@@ -129,15 +142,7 @@ EasyCAT EASYCAT(spiChipSelect);  // EasyCAT istantiation
 
 //---- pins declaration ------------------------------------------------------------------------------
 
-const int timeout = 10000;  // timeout after 10 sec not receiving Stuff
 const int debounceDelay = 50;
-
-const int BitOut0 = A2;  // digital output bit 0
-const int BitOut1 = A3;  // digital output bit 1
-const int BitOut2 = A4;  // digital output bit 2
-const int BitOut3 = A5;  // digital output bit 3
-
-const int BitIn[] = {0,1,2,3,4,5,6,7};
 
 #ifdef QUADENC
 const int QuadEncs = QUADENCS;
@@ -156,6 +161,18 @@ int InState[Inputs];
 unsigned long lastInputDebounce[Inputs];
 #endif
 
+#ifdef SINPUTS
+int sInState[sInputs];
+int soldInState[sInputs];
+int togglesinputs[sInputs];
+unsigned long lastsInputDebounce[sInputs];
+#endif
+
+#ifdef OUTPUTS
+int OutState[Outputs];
+int oldOutState[Outputs];
+#endif
+
 #ifdef QUADENC
 long EncCount[QuadEncs];
 long OldEncCount[QuadEncs];
@@ -165,15 +182,29 @@ long OldEncCount[QuadEncs];
 void Application();
 void DebugMsg(const char msg[]);
 void DebugData(char sig, int pin, int state);
-void readEncoders();
-void readInputs();
+void printArray(const char* name, const int arr[], int size);
+void printVars();
 
+#ifdef INPUTS
+void readInputs();
+#endif
+#ifdef SINPUTS
+void readsInputs();
+#endif
+#ifdef OUTPUTS
+void writeOutputs();
+#endif
+#ifdef QUADENC
+void readEncoders();
+#endif
+#ifdef STATUSLED
+void StatLedErr(int offtime, int ontime);
+#endif
 //---- setup ---------------------------------------------------------------------------------------
 
 void setup() {
   Serial.begin(9600);  // serial line initialization
                        // (used only for debug)
-
   DebugMsg("\nEasyCAT - Generic EtherCAT slave\n");  // print the banner
 
   #ifdef INPUTS
@@ -183,17 +214,23 @@ void setup() {
     }
   #endif
 
-  pinMode(BitOut0, OUTPUT);  // digital output pins setting
-  pinMode(BitOut1, OUTPUT);  //
-  pinMode(BitOut2, OUTPUT);  //
-  pinMode(BitOut3, OUTPUT);  //
+  #ifdef SINPUTS
+    //setting Inputs with internal Pullup Resistors
+    for (int i = 0; i < sInputs; i++) {
+      pinMode(sInPinmap[i], INPUT_PULLUP);
+      soldInState[i] = -1;
+      togglesinputs[i] = 0;
+    }
+  #endif
 
-  for (int i = 0; i < 8; i++) {
-    pinMode(BitIn[i], INPUT_PULLUP); // digital input pins setting
-  }
-
-                                   //---- initialize the EasyCAT board -----
-
+  #ifdef OUTPUTS
+    for (int o = 0; o < Outputs; o++) {
+      digitalWrite(OutPinmap[o], LOW); //put all outputs to low state
+      pinMode(OutPinmap[o], OUTPUT);
+      oldOutState[o] = 0;
+    }
+  #endif
+                                        //---- initialize the EasyCAT board -----
   if (EASYCAT.Init() == true) {         // initialization
     DebugMsg("initialized");            // succesfully completed
   }                                     //
@@ -202,17 +239,14 @@ void setup() {
                                         // The most common reason is that the SPI
                                         // chip select choosen on the board doesn't
                                         // match the one choosen by the firmware
-
-#ifdef STATUSLED
+    #ifdef STATUSLED
     pinMode(constLedPin, OUTPUT);
-#endif                       // stay in loop for ever \
-                             // with the Arduino led blinking
-    while (1) {              //
-      StatLedErr(500, 500);  //
+    #endif                   //
+                             //
+    while (1) {              // stay in loop for ever
+      StatLedErr(500, 500);  // with the Arduino led blinking
     }                        //
   }
-
-  PreviousMillis = millis();
 }
 
 
@@ -228,59 +262,32 @@ void loop()  // In the main loop we must call ciclically the
              //
 
   EASYCAT.MainTask();  // execute the EasyCAT task
-
-  Application();  // user applications
-#ifdef INPUTS
-  readInputs();  //read Inputs & send data
-#endif
-  printVars();
+  Application();       // user applications
 }
 
 
 
 //---- user application ------------------------------------------------------------------------------
 
-void Application()
-
-{
+void Application() {
   Millis = millis();                                   // As an example for this application
   if (Millis - PreviousMillis >= 10) {                 // we choose a cycle time of 10 mS
     PreviousMillis = Millis;                           //
-                                                       // --- four output bits management ----
-                                                       //
-    if (EASYCAT.BufferOut.Cust.outputSet0 & (1 << 0))  // the four output bits are mapped to the
-      digitalWrite(BitOut0, HIGH);                     // lower nibble of output Byte 0
-    else                                               //
-      digitalWrite(BitOut0, LOW);                      // we read each bit and write it
-                                                       // to the corrisponding pin
-    if (EASYCAT.BufferOut.Cust.outputSet0 & (1 << 1))  //
-      digitalWrite(BitOut1, HIGH);                     //
-    else                                               //
-      digitalWrite(BitOut1, LOW);                      //
-                                                       //
-    if (EASYCAT.BufferOut.Cust.outputSet0 & (1 << 2))  //
-      digitalWrite(BitOut2, HIGH);                     //
-    else                                               //
-      digitalWrite(BitOut2, LOW);                      //
-                                                       //
-    if (EASYCAT.BufferOut.Cust.outputSet0 & (1 << 3))  //
-      digitalWrite(BitOut3, HIGH);                     //
-    else                                               //
-      digitalWrite(BitOut3, LOW);                      //
 
-    //--- four input bits management ---
-    //
-
-    for (int i=0; i<8; i++){
-      if (digitalRead(BitIn[i]))                        // the four input pins are mapped to the
-        EASYCAT.BufferIn.Cust.inputSet0 |= (1 << i);   // lower nibble of input Byte 6
-      else                                             //
-        EASYCAT.BufferIn.Cust.inputSet0 &= ~(1 << i);  // we read each pin and write it
-    }
+    #ifdef INPUTS
+    readInputs();                                      //read Inputs & send data
+    #endif
+    #ifdef SINPUTS
+    readsInputs();                                     //read Inputs & send data
+    #endif
+    #ifdef OUTPUTS
+    writeOutputs();                                    //read Inputs & send data
+    #endif
+    #ifdef QUADENC
+    readEncoders();                                    //read Encoders & send data
+    #endif
+    printVars();
   }
-#ifdef QUADENC
-  readEncoders();  //read Encoders & send data
-#endif
 }
 
 void DebugMsg(const char* msg) {
@@ -295,6 +302,28 @@ void DebugData(char sig, int pin, int state) {
   Serial.print(":");
   Serial.println(state);
 #endif
+}
+
+void printArray(const char* name, const int arr[], int size) {
+  Serial.print(name);
+  Serial.print(" = [");
+  for (int i = 0; i < size; i++) {
+    Serial.print(arr[i]);
+    if (i < size - 1) {
+      Serial.print(", ");
+    }
+  }
+  Serial.println("]");
+}
+
+void printVars(){
+  curMillis = millis();
+  if (curMillis - lastPrint >= 5000) {                 // we choose a cycle time of 10 mS
+    lastPrint = curMillis;
+    printArray("sInPinmap",sInPinmap,1);
+    printArray("soldInState",soldInState,1);
+    printArray("sInState",sInState,1);
+  }
 }
 
 #ifdef INPUTS
@@ -314,6 +343,43 @@ void readInputs() {
       }
     }
   }
+}
+#endif
+
+#ifdef SINPUTS
+void readsInputs() {
+  for (int i = 0; i < sInputs; i++) {
+    sInState[i] = digitalRead(sInPinmap[i]);
+    if (sInState[i] != soldInState[i] && millis() - lastsInputDebounce[i] > debounceDelay) {
+      // Button state has changed and debounce delay has passed
+
+      if (sInState[i] == LOW || soldInState[i] == -1) {  // Stuff after || is only there to send States at Startup
+        // Button has been pressed
+        togglesinputs[i] = !togglesinputs[i];  // Toggle the input state
+
+        if (togglesinputs[i]) {
+          EASYCAT.BufferIn.Cust.inputSet0 |= (1 << i);
+          DebugData('I', sInPinmap[i], togglesinputs[i]);  // Turn the input on
+        }
+        else {
+          EASYCAT.BufferIn.Cust.inputSet0 &= ~(1 << i);
+          DebugData('I', sInPinmap[i], togglesinputs[i]);  // Turn the input off
+        }
+      }
+      soldInState[i] = sInState[i];
+      lastsInputDebounce[i] = millis();
+    }
+  }
+}
+#endif
+
+#ifdef OUTPUTS
+void writeOutputs() {
+  for (int o = 0; o < Outputs; o++)
+  if (EASYCAT.BufferOut.Cust.outputSet0 & (1 << o))  //
+    digitalWrite(OutPinmap[o], HIGH);                //
+  else                                               //
+    digitalWrite(OutPinmap[o], LOW);                 //
 }
 #endif
 
@@ -368,24 +434,3 @@ void StatLedErr(int offtime, int ontime) {
   }
 }
 #endif
-
-void printArray(const char* name, const int arr[], int size) {
-  Serial.print(name);
-  Serial.print(" = [");
-  for (int i = 0; i < size; i++) {
-    Serial.print(arr[i]);
-    if (i < size - 1) {
-      Serial.print(", ");
-    }
-  }
-  Serial.println("]");
-}
-
-void printVars(){
-  curMillis = millis();
-  if (curMillis - lastPrint >= 5000) {                 // we choose a cycle time of 10 mS
-    lastPrint = curMillis; 
-    printArray("InPinmap",InPinmap,23);
-    printArray("InState",InState,23);
-  }
-}
