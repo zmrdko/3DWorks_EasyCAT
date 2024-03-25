@@ -64,38 +64,38 @@
 
 #define DIGITALINPUTS0  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
 #ifdef DIGITALINPUTS0
-const int cDigitalInputs0 = 8;  //number of inputs using internal Pullup resistor. (short to ground to trigger)
-int inDigitalSet0[] = { 40, 41, 42, 43, 44, 45, 46, 47 };
+const int cDigitalInputs0 = 8;  //PDO inDigitalSet0: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
+int inDigitalSet0[] = { 20, 21, 22, 23, 24, 25, 26, 27 };
 #endif
 
 #define DIGITALINPUTS1  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
 #ifdef DIGITALINPUTS1
-const int cDigitalInputs1 = 8;  //number of inputs using internal Pullup resistor. (short to ground to trigger)
+const int cDigitalInputs1 = 8;  //PDO inDigitalSet1: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
 int inDigitalSet1[] = { 30, 31, 32, 33, 34, 35, 36, 37 };
 #endif
 
 //Use Arduino IO's as Toggle Inputs, which means Inputs (Buttons for example) keep HIGH State after Release and Send LOW only after beeing Pressed again.
 #define TOGGLEINPUTS0  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
 #ifdef TOGGLEINPUTS0
-const int cToggleInputs0 = 8;  //number of inputs using internal Pullup resistor. (short to ground to trigger)
-int inToggleSet0[] = { 20, 21, 22, 23, 24, 25, 26, 27 };
+const int cToggleInputs0 = 8;  //PDO inToggleSet0: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
+int inToggleSet0[] = { 40, 41, 42, 43, 44, 45, 46, 47 };
 #endif
 
 #define TOGGLEINPUTS1  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
 #ifdef TOGGLEINPUTS1
-const int cToggleInputs1 = 6;  //number of inputs using internal Pullup resistor. (short to ground to trigger)
+const int cToggleInputs1 = 6;  //PDO inToggleSet1: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
 int inToggleSet1[] = { 28, 29, 38, 29, 48, 49 };
 #endif
 
 #define OUTPUTS0  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
 #ifdef OUTPUTS0
-const int Outputs0 = 4;  //number of outputs
+const int Outputs0 = 4;  //PDO outDigitalSet0: up to 32 digital outputs
 int outDigitalSet0[] = { 4, 5, 6, 7 };
 #endif
 
 #define OUTPUTS1  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
 #ifdef OUTPUTS1
-const int Outputs1 = 4;  //number of outputs
+const int Outputs1 = 4;  //PDO outDigitalSet1: up to 32 digital outputs
 int outDigitalSet1[] = { 14, 15, 16, 17 };
 #endif
 
@@ -187,14 +187,14 @@ unsigned long lastInputDebounce1[cDigitalInputs1];
 #ifdef TOGGLEINPUTS0
 int InToggleState0[cToggleInputs0];
 int oldInToggleState0[cToggleInputs0];
-int togglesinputs0[cToggleInputs0];
+int toggleinputs0[cToggleInputs0];
 unsigned long lastsInputDebounce0[cToggleInputs0];
 #endif
 
 #ifdef TOGGLEINPUTS1
 int InToggleState1[cToggleInputs1];
 int oldInToggleState1[cToggleInputs1];
-int togglesinputs1[cToggleInputs1];
+int toggleinputs1[cToggleInputs1];
 unsigned long lastsInputDebounce1[cToggleInputs1];
 #endif
 
@@ -270,7 +270,7 @@ void setup() {
     for (int i = 0; i < cToggleInputs0; i++) {
       pinMode(inToggleSet0[i], INPUT_PULLUP);
       oldInToggleState0[i] = -1;
-      togglesinputs0[i] = 0;
+      toggleinputs0[i] = 0;
     }
   #endif
 
@@ -279,7 +279,7 @@ void setup() {
     for (int i = 0; i < cToggleInputs1; i++) {
       pinMode(inToggleSet1[i], INPUT_PULLUP);
       oldInToggleState1[i] = -1;
-      togglesinputs1[i] = 0;
+      toggleinputs1[i] = 0;
     }
   #endif
 
@@ -452,15 +452,15 @@ void readToggleInputs0() {
 
       if (InToggleState0[i] == LOW || oldInToggleState0[i] == -1) {  // Stuff after || is only there to send States at Startup
         // Button has been pressed
-        togglesinputs0[i] = !togglesinputs0[i];  // Toggle the input state
+        toggleinputs0[i] = !toggleinputs0[i];  // Toggle the input state
 
-        if (togglesinputs0[i]) {
+        if (toggleinputs0[i]) {
           EASYCAT.BufferIn.Cust.inToggleSet0 |= (1 << i);
-          DebugData('I', inToggleSet0[i], togglesinputs0[i]);  // Turn the input on
+          DebugData('I', inToggleSet0[i], toggleinputs0[i]);  // Turn the input on
         }
         else {
           EASYCAT.BufferIn.Cust.inToggleSet0 &= ~(1 << i);
-          DebugData('I', inToggleSet0[i], togglesinputs0[i]);  // Turn the input off
+          DebugData('I', inToggleSet0[i], toggleinputs0[i]);  // Turn the input off
         }
       }
       oldInToggleState0[i] = InToggleState0[i];
@@ -479,15 +479,15 @@ void readToggleInputs1() {
 
       if (InToggleState1[i] == LOW || oldInToggleState1[i] == -1) {  // Stuff after || is only there to send States at Startup
         // Button has been pressed
-        togglesinputs1[i] = !togglesinputs1[i];  // Toggle the input state
+        toggleinputs1[i] = !toggleinputs1[i];  // Toggle the input state
 
-        if (togglesinputs1[i]) {
+        if (toggleinputs1[i]) {
           EASYCAT.BufferIn.Cust.inToggleSet1 |= (1 << i);
-          DebugData('I', inToggleSet1[i], togglesinputs1[i]);  // Turn the input on
+          DebugData('I', inToggleSet1[i], toggleinputs1[i]);  // Turn the input on
         }
         else {
           EASYCAT.BufferIn.Cust.inToggleSet1 &= ~(1 << i);
-          DebugData('I', inToggleSet1[i], togglesinputs1[i]);  // Turn the input off
+          DebugData('I', inToggleSet1[i], toggleinputs1[i]);  // Turn the input off
         }
       }
       oldInToggleState1[i] = InToggleState1[i];
