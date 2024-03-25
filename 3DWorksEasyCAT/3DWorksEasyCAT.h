@@ -54,6 +54,8 @@ typedef union												//---- input buffer ----
 		uint32_t    inToggleSet1;
 		int32_t     mpg0;
 		int32_t     mpg1;
+		uint8_t     inAnalog00;
+		uint8_t     inAnalog01;
 		uint8_t     inAnalog02;
 		uint8_t     inAnalog03;
 		uint8_t     inAnalog04;
@@ -68,8 +70,6 @@ typedef union												//---- input buffer ----
 		uint8_t     inAnalog13;
 		uint8_t     inAnalog14;
 		uint8_t     inAnalog15;
-		uint8_t     inAnalog00;
-		uint8_t     inAnalog01;
 	}Cust;
 } PROCBUFFER_IN;
 

@@ -45,6 +45,10 @@ inToggleSet0
 uint32_t
 inToggleSet1
 uint32_t
+mpg0
+int32_t
+mpg1
+int32_t
 inAnalog00
 uint8_t
 inAnalog01
@@ -77,10 +81,6 @@ inAnalog14
 uint8_t
 inAnalog15
 uint8_t
-mpg0
-int32_t
-mpg1
-int32_t
 INFO_TAG
 0x0000079A
 AB&amp;T

@@ -1,7 +1,7 @@
 
 Easy Configurator, configuration engine  V_3_3 
 
-log created on Mon Mar 25 08:06:39 2024
+log created on Mon Mar 25 11:35:51 2024
 
 Analyzing the project file
 
@@ -31,24 +31,24 @@ Line 23 --- inDigitalSet0           uint32_t
 Line 24 --- inDigitalSet1           uint32_t
 Line 25 --- inToggleSet0            uint32_t
 Line 26 --- inToggleSet1            uint32_t
-Line 27 --- inAnalog00              uint8_t
-Line 28 --- inAnalog01              uint8_t
-Line 29 --- inAnalog02              uint8_t
-Line 30 --- inAnalog03              uint8_t
-Line 31 --- inAnalog04              uint8_t
-Line 32 --- inAnalog05              uint8_t
-Line 33 --- inAnalog06              uint8_t
-Line 34 --- inAnalog07              uint8_t
-Line 35 --- inAnalog08              uint8_t
-Line 36 --- inAnalog09              uint8_t
-Line 37 --- inAnalog10              uint8_t
-Line 38 --- inAnalog11              uint8_t
-Line 39 --- inAnalog12              uint8_t
-Line 40 --- inAnalog13              uint8_t
-Line 41 --- inAnalog14              uint8_t
-Line 42 --- inAnalog15              uint8_t
-Line 43 --- mpg0                    int32_t
-Line 44 --- mpg1                    int32_t
+Line 27 --- mpg0                    int32_t
+Line 28 --- mpg1                    int32_t
+Line 29 --- inAnalog00              uint8_t
+Line 30 --- inAnalog01              uint8_t
+Line 31 --- inAnalog02              uint8_t
+Line 32 --- inAnalog03              uint8_t
+Line 33 --- inAnalog04              uint8_t
+Line 34 --- inAnalog05              uint8_t
+Line 35 --- inAnalog06              uint8_t
+Line 36 --- inAnalog07              uint8_t
+Line 37 --- inAnalog08              uint8_t
+Line 38 --- inAnalog09              uint8_t
+Line 39 --- inAnalog10              uint8_t
+Line 40 --- inAnalog11              uint8_t
+Line 41 --- inAnalog12              uint8_t
+Line 42 --- inAnalog13              uint8_t
+Line 43 --- inAnalog14              uint8_t
+Line 44 --- inAnalog15              uint8_t
 INFO_TAG
 0x0000079A
 AB&amp;T
@@ -252,112 +252,112 @@ Input entries
             <Index>#x6</Index>
             <SubIndex>7</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog02</Name>
+            <Name>inAnalog00</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>8</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog03</Name>
+            <Name>inAnalog01</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>9</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog04</Name>
+            <Name>inAnalog02</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>10</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog05</Name>
+            <Name>inAnalog03</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>11</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog06</Name>
+            <Name>inAnalog04</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>12</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog07</Name>
+            <Name>inAnalog05</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>13</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog08</Name>
+            <Name>inAnalog06</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>14</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog09</Name>
+            <Name>inAnalog07</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>15</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog10</Name>
+            <Name>inAnalog08</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>16</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog11</Name>
+            <Name>inAnalog09</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>17</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog12</Name>
+            <Name>inAnalog10</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>18</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog13</Name>
+            <Name>inAnalog11</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>19</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog14</Name>
+            <Name>inAnalog12</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>20</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog15</Name>
+            <Name>inAnalog13</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>21</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog00</Name>
+            <Name>inAnalog14</Name>
             <DataType>USINT</DataType>
           </Entry>
           <Entry>
             <Index>#x6</Index>
             <SubIndex>22</SubIndex>
             <BitLen>8</BitLen>
-            <Name>inAnalog01</Name>
+            <Name>inAnalog15</Name>
             <DataType>USINT</DataType>
           </Entry>
 
@@ -400,6 +400,8 @@ Input entries
 		uint32_t    inToggleSet1;
 		int32_t     mpg0;
 		int32_t     mpg1;
+		uint8_t     inAnalog00;
+		uint8_t     inAnalog01;
 		uint8_t     inAnalog02;
 		uint8_t     inAnalog03;
 		uint8_t     inAnalog04;
@@ -414,8 +416,6 @@ Input entries
 		uint8_t     inAnalog13;
 		uint8_t     inAnalog14;
 		uint8_t     inAnalog15;
-		uint8_t     inAnalog00;
-		uint8_t     inAnalog01;
 
 The 3DWorksEasyCAT.h file has been created
 
