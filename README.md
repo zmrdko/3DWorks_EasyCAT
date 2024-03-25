@@ -1,3 +1,5 @@
+inspired by https://github.com/AlexmagToast/LinuxCNC_ArduinoConnector
+
 Download Easy Configurator V4.2 (.zip) from here:
 
 https://www.bausano.net/en/hardware/easycat.html
