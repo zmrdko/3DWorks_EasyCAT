@@ -62,40 +62,31 @@
 #define spiChipSelect 9  // Chip select pin
 
 
-#define DIGITALINPUTS0  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
-#ifdef DIGITALINPUTS0
+#define DIGITALINPUTS  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
+#ifdef DIGITALINPUTS
 const int cDigitalInputs0 = 8;  //PDO inDigitalSet0: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
 int inDigitalSet0[] = { 20, 21, 22, 23, 24, 25, 26, 27 };
-#endif
 
-#define DIGITALINPUTS1  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
-#ifdef DIGITALINPUTS1
 const int cDigitalInputs1 = 8;  //PDO inDigitalSet1: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
 int inDigitalSet1[] = { 30, 31, 32, 33, 34, 35, 36, 37 };
 #endif
 
 //Use Arduino IO's as Toggle Inputs, which means Inputs (Buttons for example) keep HIGH State after Release and Send LOW only after beeing Pressed again.
-#define TOGGLEINPUTS0  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
-#ifdef TOGGLEINPUTS0
+#define TOGGLEINPUTS  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
+#ifdef TOGGLEINPUTS
 const int cToggleInputs0 = 8;  //PDO inToggleSet0: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
 int inToggleSet0[] = { 40, 41, 42, 43, 44, 45, 46, 47 };
-#endif
 
-#define TOGGLEINPUTS1  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
-#ifdef TOGGLEINPUTS1
 const int cToggleInputs1 = 6;  //PDO inToggleSet1: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
 int inToggleSet1[] = { 28, 29, 38, 29, 48, 49 };
 #endif
 
-#define OUTPUTS0  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
-#ifdef OUTPUTS0
-const int Outputs0 = 4;  //PDO outDigitalSet0: up to 32 digital outputs
+#define OUTPUTS  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
+#ifdef OUTPUTS
+const int cOutputs0 = 4;  //PDO outDigitalSet0: up to 32 digital outputs
 int outDigitalSet0[] = { 4, 5, 6, 7 };
-#endif
 
-#define OUTPUTS1  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
-#ifdef OUTPUTS1
-const int Outputs1 = 4;  //PDO outDigitalSet1: up to 32 digital outputs
+const int cOutputs1 = 4;  //PDO outDigitalSet1: up to 32 digital outputs
 int outDigitalSet1[] = { 14, 15, 16, 17 };
 #endif
 
@@ -174,38 +165,32 @@ unsigned long PreviousMillis = 0;
 unsigned long curMillis = 0;
 unsigned long lastPrint = 0;
 
-#ifdef DIGITALINPUTS0
-int InDigitalState0[cDigitalInputs0];
+#ifdef DIGITALINPUTS
+int inDigitalState0[cDigitalInputs0];
 unsigned long lastInputDebounce0[cDigitalInputs0];
-#endif
 
-#ifdef DIGITALINPUTS1
-int InDigitalState1[cDigitalInputs1];
+int inDigitalState1[cDigitalInputs1];
 unsigned long lastInputDebounce1[cDigitalInputs1];
 #endif
 
-#ifdef TOGGLEINPUTS0
-int InToggleState0[cToggleInputs0];
+#ifdef TOGGLEINPUTS
+int inToggleState0[cToggleInputs0];
 int oldInToggleState0[cToggleInputs0];
 int toggleinputs0[cToggleInputs0];
-unsigned long lastsInputDebounce0[cToggleInputs0];
-#endif
+unsigned long lastToggleDebounce0[cToggleInputs0];
 
-#ifdef TOGGLEINPUTS1
-int InToggleState1[cToggleInputs1];
+int inToggleState1[cToggleInputs1];
 int oldInToggleState1[cToggleInputs1];
 int toggleinputs1[cToggleInputs1];
-unsigned long lastsInputDebounce1[cToggleInputs1];
+unsigned long lastToggleDebounce1[cToggleInputs1];
 #endif
 
-#ifdef OUTPUTS0
-int OutState0[Outputs0];
-int oldOutState0[Outputs0];
-#endif
+#ifdef OUTPUTS
+int OutState0[cOutputs0];
+int oldOutState0[cOutputs0];
 
-#ifdef OUTPUTS1
-int OutState1[Outputs1];
-int oldOutState1[Outputs1];
+int OutState1[cOutputs1];
+int oldOutState1[cOutputs1];
 #endif
 
 #ifdef QUADENC
@@ -220,23 +205,14 @@ void DebugData(char sig, int pin, int state);
 void printArray(const char* name, const int arr[], int size);
 void printVars();
 
-#ifdef DIGITALINPUTS0
-void readDigitalInputs0();
+#ifdef DIGITALINPUTS
+void readDigitalInputs(int *cDigitalInputs, int *inDigitalSet, int *InDigitalState, unsigned long *lastInputDebounce, uint32_t *targetPDO);
 #endif
-#ifdef DIGITALINPUTS1
-void readDigitalInputs1();
+#ifdef TOGGLEINPUTS
+void readToggleInputs(int *cToggleInputs, int *inToggleSet, int *toggleinputs, int *inToggleState, int *oldInToggleState, unsigned long *lastToggleDebounce, uint32_t *targetPDO);
 #endif
-#ifdef TOGGLEINPUTS0
-void readToggleInputs0();
-#endif
-#ifdef TOGGLEINPUTS1
-void readToggleInputs1();
-#endif
-#ifdef OUTPUTS0
-void writeOutputs0();
-#endif
-#ifdef OUTPUTS1
-void writeOutputs1();
+#ifdef OUTPUTS
+void writeOutputs(int *cOutputs, int *outDigitalSet, uint32_t *sourcePDO);
 #endif
 #ifdef QUADENC
 void readEncoders();
@@ -251,30 +227,24 @@ void setup() {
                        // (used only for debug)
   DebugMsg("\nEasyCAT - Generic EtherCAT slave\n");  // print the banner
 
-  #ifdef DIGITALINPUTS0
+  #ifdef DIGITALINPUTS
     //setting Inputs with internal Pullup Resistors
     for (int i = 0; i < cDigitalInputs0; i++) {
       pinMode(inDigitalSet0[i], INPUT_PULLUP);
     }
-  #endif
-
-  #ifdef DIGITALINPUTS1
     //setting Inputs with internal Pullup Resistors
     for (int i = 0; i < cDigitalInputs1; i++) {
       pinMode(inDigitalSet1[i], INPUT_PULLUP);
     }
   #endif
 
-  #ifdef TOGGLEINPUTS0
+  #ifdef TOGGLEINPUTS
     //setting Inputs with internal Pullup Resistors
     for (int i = 0; i < cToggleInputs0; i++) {
       pinMode(inToggleSet0[i], INPUT_PULLUP);
       oldInToggleState0[i] = -1;
       toggleinputs0[i] = 0;
     }
-  #endif
-
-  #ifdef TOGGLEINPUTS1
     //setting Inputs with internal Pullup Resistors
     for (int i = 0; i < cToggleInputs1; i++) {
       pinMode(inToggleSet1[i], INPUT_PULLUP);
@@ -284,15 +254,12 @@ void setup() {
   #endif
 
   #ifdef OUTPUTS0
-    for (int o = 0; o < Outputs0; o++) {
+    for (int o = 0; o < cOutputs0; o++) {
       digitalWrite(outDigitalSet0[o], LOW); //put all outputs to low state
       pinMode(outDigitalSet0[o], OUTPUT);
       oldOutState0[o] = 0;
     }
-  #endif
-
-  #ifdef OUTPUTS1
-    for (int o = 0; o < Outputs1; o++) {
+    for (int o = 0; o < cOutputs1; o++) {
       digitalWrite(outDigitalSet1[o], LOW); //put all outputs to low state
       pinMode(outDigitalSet1[o], OUTPUT);
       oldOutState1[o] = 0;
@@ -342,23 +309,17 @@ void Application() {
   if (Millis - PreviousMillis >= 10) {                 // we choose a cycle time of 10 mS
     PreviousMillis = Millis;                           //
 
-    #ifdef DIGITALINPUTS0
-    readDigitalInputs0();                              //read Inputs & send data
+    #ifdef DIGITALINPUTS
+    readDigitalInputs(&cDigitalInputs0, inDigitalSet0, inDigitalState0, lastInputDebounce0, &EASYCAT.BufferIn.Cust.inDigitalSet0);
+    readDigitalInputs(&cDigitalInputs1, inDigitalSet1, inDigitalState1, lastInputDebounce1, &EASYCAT.BufferIn.Cust.inDigitalSet1);
     #endif
-    #ifdef DIGITALINPUTS1
-    readDigitalInputs1();                              //read Inputs & send data
+    #ifdef TOGGLEINPUTS
+    readToggleInputs(&cToggleInputs0, inToggleSet0, toggleinputs0, inToggleState0, oldInToggleState0, lastToggleDebounce0, &EASYCAT.BufferIn.Cust.inToggleSet0);
+    readToggleInputs(&cToggleInputs1, inToggleSet1, toggleinputs1, inToggleState1, oldInToggleState1, lastToggleDebounce1, &EASYCAT.BufferIn.Cust.inToggleSet1);
     #endif
-    #ifdef TOGGLEINPUTS0
-    readToggleInputs0();                               //read Inputs & send data
-    #endif
-    #ifdef TOGGLEINPUTS1
-    readToggleInputs1();                               //read Inputs & send data
-    #endif
-    #ifdef OUTPUTS0
-    writeOutputs0();                                   //read Inputs & send data
-    #endif
-    #ifdef OUTPUTS1
-    writeOutputs1();                                   //read Inputs & send data
+    #ifdef OUTPUTS
+    writeOutputs(&cOutputs0, outDigitalSet0, &EASYCAT.BufferOut.Cust.outDigitalSet0);
+    writeOutputs(&cOutputs1, outDigitalSet1, &EASYCAT.BufferOut.Cust.outDigitalSet1);
     #endif
     #ifdef QUADENC
     readEncoders();                                    //read Encoders & send data
@@ -403,117 +364,62 @@ void printVars(){
   }
 }
 
-#ifdef DIGITALINPUTS0
-void readDigitalInputs0() {
-  for (int i = 0; i < cDigitalInputs0; i++) {
-    int State = digitalRead(inDigitalSet0[i]);
-    if (InDigitalState0[i] != State && millis() - lastInputDebounce0[i] > debounceDelay) {
-      InDigitalState0[i] = State;
-      lastInputDebounce0[i] = millis();
+#ifdef DIGITALINPUTS
+void readDigitalInputs(int *cDigitalInputs, int *inDigitalSet, int *inDigitalState, unsigned long *lastInputDebounce, uint32_t *targetPDO) {
+  for (int i = 0; i < *cDigitalInputs; i++) {
+    int State = digitalRead(*(inDigitalSet + i)); // Using pointer arithmetic to access array elements
+    if (*(inDigitalState + i) != State && millis() - *(lastInputDebounce + i) > debounceDelay) {
+      *(inDigitalState + i) = State;
+      *(lastInputDebounce + i) = millis();
    
-      DebugData('I', inDigitalSet0[i], InDigitalState0[i]);
+      DebugData('I', *(inDigitalSet + i), *(inDigitalState + i));
       if (State) {
-        EASYCAT.BufferIn.Cust.inDigitalSet0 |= (1 << i);
+        *targetPDO |= (1UL << i); // Make sure to use unsigned long constant (1UL)
       }
       else {
-        EASYCAT.BufferIn.Cust.inDigitalSet0 &= ~(1 << i);
+        *targetPDO &= ~(1UL << i); // Make sure to use unsigned long constant (1UL)
       }
     }
   }
 }
 #endif
 
-#ifdef DIGITALINPUTS1
-void readDigitalInputs1() {
-  for (int i = 0; i < cDigitalInputs1; i++) {
-    int State = digitalRead(inDigitalSet1[i]);
-    if (InDigitalState1[i] != State && millis() - lastInputDebounce1[i] > debounceDelay) {
-      InDigitalState1[i] = State;
-      lastInputDebounce1[i] = millis();
-   
-      DebugData('I', inDigitalSet1[i], InDigitalState1[i]);
-      if (State) {
-        EASYCAT.BufferIn.Cust.inDigitalSet1 |= (1 << i);
-      }
-      else {
-        EASYCAT.BufferIn.Cust.inDigitalSet1 &= ~(1 << i);
-      }
-    }
-  }
-}
-#endif
-
-#ifdef TOGGLEINPUTS0
-void readToggleInputs0() {
-  for (int i = 0; i < cToggleInputs0; i++) {
-    InToggleState0[i] = digitalRead(inToggleSet0[i]);
-    if (InToggleState0[i] != oldInToggleState0[i] && millis() - lastsInputDebounce0[i] > debounceDelay) {
+#ifdef TOGGLEINPUTS
+void readToggleInputs(int *cToggleInputs, int *inToggleSet, int *toggleinputs, int *inToggleState, int *oldInToggleState, unsigned long *lastToggleDebounce, uint32_t *targetPDO) {
+  for (int i = 0; i < *cToggleInputs; i++) {
+    *(inToggleState + i) = digitalRead(*(inToggleSet + i)); // Using pointer arithmetic to access array elements
+    if (*(inToggleState + i) != *(oldInToggleState + i) && millis() - *(lastToggleDebounce + i) > debounceDelay) {
       // Button state has changed and debounce delay has passed
 
-      if (InToggleState0[i] == LOW || oldInToggleState0[i] == -1) {  // Stuff after || is only there to send States at Startup
+      if (*(inToggleState + i) == LOW || *(oldInToggleState + i) == -1) {  // Stuff after || is only there to send States at Startup
         // Button has been pressed
-        toggleinputs0[i] = !toggleinputs0[i];  // Toggle the input state
+        *(toggleinputs + i) = !(*(toggleinputs + i));  // Toggle the input state
 
-        if (toggleinputs0[i]) {
-          EASYCAT.BufferIn.Cust.inToggleSet0 |= (1 << i);
-          DebugData('I', inToggleSet0[i], toggleinputs0[i]);  // Turn the input on
+        if (*(toggleinputs + i)) {
+          *targetPDO |= (1UL << i); // Make sure to use unsigned long constant (1UL)
+          DebugData('I', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input on
         }
         else {
-          EASYCAT.BufferIn.Cust.inToggleSet0 &= ~(1 << i);
-          DebugData('I', inToggleSet0[i], toggleinputs0[i]);  // Turn the input off
+          *targetPDO &= ~(1UL << i); // Make sure to use unsigned long constant (1UL)
+          DebugData('I', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input off
         }
       }
-      oldInToggleState0[i] = InToggleState0[i];
-      lastsInputDebounce0[i] = millis();
+      *(oldInToggleState + i) = *(inToggleState + i);
+      *(lastToggleDebounce + i) = millis();
     }
   }
 }
 #endif
 
-#ifdef TOGGLEINPUTS1
-void readToggleInputs1() {
-  for (int i = 0; i < cToggleInputs1; i++) {
-    InToggleState1[i] = digitalRead(inToggleSet1[i]);
-    if (InToggleState1[i] != oldInToggleState1[i] && millis() - lastsInputDebounce1[i] > debounceDelay) {
-      // Button state has changed and debounce delay has passed
-
-      if (InToggleState1[i] == LOW || oldInToggleState1[i] == -1) {  // Stuff after || is only there to send States at Startup
-        // Button has been pressed
-        toggleinputs1[i] = !toggleinputs1[i];  // Toggle the input state
-
-        if (toggleinputs1[i]) {
-          EASYCAT.BufferIn.Cust.inToggleSet1 |= (1 << i);
-          DebugData('I', inToggleSet1[i], toggleinputs1[i]);  // Turn the input on
-        }
-        else {
-          EASYCAT.BufferIn.Cust.inToggleSet1 &= ~(1 << i);
-          DebugData('I', inToggleSet1[i], toggleinputs1[i]);  // Turn the input off
-        }
-      }
-      oldInToggleState1[i] = InToggleState1[i];
-      lastsInputDebounce1[i] = millis();
+#ifdef OUTPUTS
+void writeOutputs(int cOutputs, int *outDigitalSet, uint32_t *sourcePDO) {
+  for (int o = 0; o < cOutputs; o++) {
+    if (*sourcePDO & (1UL << o)) {  // Make sure to use unsigned long constant (1UL)
+      digitalWrite(*(outDigitalSet + o), HIGH);
+    } else {
+      digitalWrite(*(outDigitalSet + o), LOW);
     }
   }
-}
-#endif
-
-#ifdef OUTPUTS0
-void writeOutputs0() {
-  for (int o = 0; o < Outputs0; o++)
-  if (EASYCAT.BufferOut.Cust.outDigitalSet0 & (1 << o))  //
-    digitalWrite(outDigitalSet0[o], HIGH);               //
-  else                                                   //
-    digitalWrite(outDigitalSet0[o], LOW);                //
-}
-#endif
-
-#ifdef OUTPUTS1
-void writeOutputs1() {
-  for (int o = 0; o < Outputs1; o++)
-  if (EASYCAT.BufferOut.Cust.outDigitalSet1 & (1 << o))  //
-    digitalWrite(outDigitalSet1[o], HIGH);               //
-  else                                                   //
-    digitalWrite(outDigitalSet1[o], LOW);                //
 }
 #endif
 
@@ -568,3 +474,5 @@ void StatLedErr(int offtime, int ontime) {
   }
 }
 #endif
+
+
