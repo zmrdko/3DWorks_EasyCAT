@@ -253,7 +253,7 @@ void setup() {
     }
   #endif
 
-  #ifdef OUTPUTS0
+  #ifdef OUTPUTS
     for (int o = 0; o < cOutputs0; o++) {
       digitalWrite(outDigitalSet0[o], LOW); //put all outputs to low state
       pinMode(outDigitalSet0[o], OUTPUT);
