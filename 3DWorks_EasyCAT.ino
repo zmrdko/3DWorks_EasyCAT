@@ -200,9 +200,9 @@ long OldEncCount[QuadEncs];
 
 //---- user defined functions ---------------------------------------------------------------------
 void Application();
-void DebugMsg(const char msg[]);
+void DebugMsg(char *msg[]);
 void DebugData(char sig, int pin, int state);
-void printArray(const char* name, const int arr[], int size);
+void printArray(char *name, int arr[], int size);
 void printVars();
 
 #ifdef DIGITALINPUTS
@@ -310,16 +310,16 @@ void Application() {
     PreviousMillis = Millis;                           //
 
     #ifdef DIGITALINPUTS
-    readDigitalInputs(&cDigitalInputs0, inDigitalSet0, inDigitalState0, lastInputDebounce0, &EASYCAT.BufferIn.Cust.inDigitalSet0);
-    readDigitalInputs(&cDigitalInputs1, inDigitalSet1, inDigitalState1, lastInputDebounce1, &EASYCAT.BufferIn.Cust.inDigitalSet1);
+    readDigitalInputs(&cDigitalInputs0, &inDigitalSet0[0], &inDigitalState0[0], &lastInputDebounce0[0], &EASYCAT.BufferIn.Cust.inDigitalSet0);
+    readDigitalInputs(&cDigitalInputs1, &inDigitalSet1[0], &inDigitalState1[0], &lastInputDebounce1[0], &EASYCAT.BufferIn.Cust.inDigitalSet1);
     #endif
     #ifdef TOGGLEINPUTS
-    readToggleInputs(&cToggleInputs0, inToggleSet0, toggleinputs0, inToggleState0, oldInToggleState0, lastToggleDebounce0, &EASYCAT.BufferIn.Cust.inToggleSet0);
-    readToggleInputs(&cToggleInputs1, inToggleSet1, toggleinputs1, inToggleState1, oldInToggleState1, lastToggleDebounce1, &EASYCAT.BufferIn.Cust.inToggleSet1);
+    readToggleInputs(&cToggleInputs0, &inToggleSet0[0], &toggleinputs0[0], &inToggleState0[0], &oldInToggleState0[0], &lastToggleDebounce0[0], &EASYCAT.BufferIn.Cust.inToggleSet0);
+    readToggleInputs(&cToggleInputs1, &inToggleSet1[0], &toggleinputs1[0], &inToggleState1[0], &oldInToggleState1[0], &lastToggleDebounce1[0], &EASYCAT.BufferIn.Cust.inToggleSet1);
     #endif
     #ifdef OUTPUTS
-    writeOutputs(&cOutputs0, outDigitalSet0, &EASYCAT.BufferOut.Cust.outDigitalSet0);
-    writeOutputs(&cOutputs1, outDigitalSet1, &EASYCAT.BufferOut.Cust.outDigitalSet1);
+    writeOutputs(&cOutputs0, &outDigitalSet0[0], &EASYCAT.BufferOut.Cust.outDigitalSet0);
+    writeOutputs(&cOutputs1, &outDigitalSet1[0], &EASYCAT.BufferOut.Cust.outDigitalSet1);
     #endif
     #ifdef QUADENC
     readEncoders();                                    //read Encoders & send data
@@ -330,7 +330,7 @@ void Application() {
   }
 }
 
-void DebugMsg(const char* msg) {
+void DebugMsg(char *msg) {
 #ifdef DEBUG
   Serial.println(msg);
 #endif
@@ -344,8 +344,8 @@ void DebugData(char sig, int pin, int state) {
 #endif
 }
 
-void printArray(const char* name, const int arr[], int size) {
-  Serial.print(name);
+void printArray( char *name, int arr[], int size) {
+  Serial.print(*name);
   Serial.print(" = [");
   for (int i = 0; i < size; i++) {
     Serial.print(arr[i]);
@@ -412,8 +412,8 @@ void readToggleInputs(int *cToggleInputs, int *inToggleSet, int *toggleinputs, i
 #endif
 
 #ifdef OUTPUTS
-void writeOutputs(int cOutputs, int *outDigitalSet, uint32_t *sourcePDO) {
-  for (int o = 0; o < cOutputs; o++) {
+void writeOutputs(int *cOutputs, int *outDigitalSet, uint32_t *sourcePDO) {
+  for (int o = 0; o < *cOutputs; o++) {
     if (*sourcePDO & (1UL << o)) {  // Make sure to use unsigned long constant (1UL)
       digitalWrite(*(outDigitalSet + o), HIGH);
     } else {
