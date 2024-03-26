@@ -64,21 +64,21 @@
 
 #define DIGITALINPUTS  //Use Arduino IO's as Inputs. Define how many Inputs you want in total and then which Pins you want to be Inputs.
 #ifdef DIGITALINPUTS
-const int cDigitalInputs0 = 8;  //PDO inDigitalSet0: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
-int inDigitalSet0[] = { 20, 21, 22, 23, 24, 25, 26, 27 };
+const int cDigitalInputs0 = 20;  //PDO inDigitalSet0: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
+int inDigitalSet0[] = { 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49 };
 
-const int cDigitalInputs1 = 8;  //PDO inDigitalSet1: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
-int inDigitalSet1[] = { 30, 31, 32, 33, 34, 35, 36, 37 };
+const int cDigitalInputs1 = 0;  //PDO inDigitalSet1: up to 32 digital inputs using internal Pullup resistor. (short to ground to trigger)
+int inDigitalSet1[] = { };
 #endif
 
 //Use Arduino IO's as Toggle Inputs, which means Inputs (Buttons for example) keep HIGH State after Release and Send LOW only after beeing Pressed again.
 #define TOGGLEINPUTS  //Define how many Toggle Inputs you want in total and then which Pins you want to be Toggle Inputs.
 #ifdef TOGGLEINPUTS
-const int cToggleInputs0 = 8;  //PDO inToggleSet0: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
-int inToggleSet0[] = { 40, 41, 42, 43, 44, 45, 46, 47 };
+const int cToggleInputs0 = 10;  //PDO inToggleSet0: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
+int inToggleSet0[] = { 20, 21, 22, 23, 24, 25, 26, 27, 28, 29 };
 
-const int cToggleInputs1 = 6;  //PDO inToggleSet1: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
-int inToggleSet1[] = { 28, 29, 38, 29, 48, 49 };
+const int cToggleInputs1 = 0;  //PDO inToggleSet1: up to 32 digital toggle inputs using internal Pullup resistor. (short to ground to trigger)
+int inToggleSet1[] = { };
 #endif
 
 #define OUTPUTS  //Use Arduino IO's as Outputs. Define how many Outputs you want in total and then which Pins you want to be Outputs.
@@ -397,11 +397,11 @@ void readToggleInputs(int *cToggleInputs, int *inToggleSet, int *toggleinputs, i
 
         if (*(toggleinputs + i)) {
           *targetPDO |= (1UL << i); // Make sure to use unsigned long constant (1UL)
-          DebugData('I', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input on
+          DebugData('T', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input on
         }
         else {
           *targetPDO &= ~(1UL << i); // Make sure to use unsigned long constant (1UL)
-          DebugData('I', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input off
+          DebugData('T', *(inToggleSet + i), *(toggleinputs + i));  // Turn the input off
         }
       }
       *(oldInToggleState + i) = *(inToggleState + i);
